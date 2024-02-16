@@ -5,24 +5,24 @@ const url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/
 
 // Fetching JSON data
 d3.json(url).then(function(data){
-    dropdown(data.samples);
     console.log(data.samples);
+    
+    // Running function to populate dropdown option with subject IDs
+    dropdown(data.samples);
+
+    // Running function to create an initial barchart with data from first subjectID
     init(data.samples);
 
+    // Activating testing function when change in dropdown
+    d3.selectAll("#selDataset").on("change", testing);
 
-// Activating testing function when change in dropdown
-d3.selectAll("#selDataset").on("change", testing);
-
-function testing(){
-    console.log(`testing has been activated`);
-    let dropdown = d3.select("#selDataset");
-    let subjectquery = dropdown.property("value")
-    console.log(subjectquery)
-    bargraph(data.samples, subjectquery)
-}
-
-
-
+    function testing(){
+        console.log(`testing has been activated`);
+        let dropdown = d3.select("#selDataset");
+        let subjectquery = dropdown.property("value");
+        console.log(subjectquery);
+        changeid(data.samples, subjectquery);
+    }
 
 });
 
@@ -37,65 +37,80 @@ function dropdown(subjects){
     };
 };
 
-let microid = [];
-let microname = [];
-let microsv = [];
-
+// Defining a function to take a slice of data
 function reduceto10(x){
     return x.slice(0,10);
-}
+};
 
-function init(subjects) {
-    const firstx = subjects[0].otu_ids
-    const otulabel = reduceto10(firstx.map((x) => "OTU "+x));
-    const only10label = reduceto10(subjects[0].otu_labels);
-    const only10values = reduceto10(subjects[0].sample_values);
+// Defining a function to create a horizontal bar chart with 10 values
+function createbar(individual){
     
-    console.log(`at init: micro id ${otulabel}, microname ${only10label}, microsv ${only10values}`)
+    // Defining data for chart
+    const only10number = reduceto10(individual.otu_ids.map((x) => "OTU "+x)).reverse();
+    const only10label = reduceto10(individual.otu_labels).reverse();
+    const only10values = reduceto10(individual.sample_values).reverse();
+
+    // Trace for data with hovertext
     let trace1 = {
-        x: otulabel,
-        y: only10values,
-        type: "bar"
+        y: only10number,
+        x: only10values,
+        hovertemplate: '<b>Number of Sample: %{x}</b>'+'<br>'+'<b>OTU Label:</b>'+'<br>'+'<i>%{text}</i>',
+        text: only10label,
+        type: "bar",
+        name: "",
+        orientation: 'h'
     };
+
+    // Creating data array
     let info = [trace1];
+
+    // Plotting in "bar" division
     Plotly.newPlot("bar", info);
 };
 
+// Defining a function to graph first individual in dataset
+function init(subjects) {
+    // Adding barchart
+    createbar(subjects[0]);
+    createbubble(subjects[0]);
+};
 
 
 
-// Defining a function to take max of 10 entries starting at index 0 of sample values
-function bargraph(subjects, subjectquery){
+// Defining a function to find data corresponding to dropdown id and graph it
+function changeid(subjects, subjectquery){
     console.log(`the subjectquery is ${subjectquery}`);
     // loop through individual subject
     for (let subject of subjects){
-        
         if (subject.id == subjectquery){
-            // pull data and put into variables
-            const firstx = subject.otu_ids;
-            const otureplace = reduceto10(firstx.map((x) => "OTU "+x));
-            const only10bacname = reduceto10(subject.otu_labels);
-            const only10values = reduceto10(subject.sample_values);
-            console.log(`the length of names is: ${microname.length}`)
-            console.log(`micro id ${otureplace}, microname ${only10bacname}, microsv ${only10values}`)
-            
-            let trace1 = {
-                x: otureplace,
-                y: only10values,
-                type:"bar"
-            }
-            let info = [trace1];
-            // updatePlotly(info)
-            // Plotly.newPlot("bar", info); 
-            Plotly.restyle("bar", info)   
-            
+            createbar(subject);
+            createbubble(subject);
         };
     };
- 
 };
 
-function updatePlotly(newdata){
-    Plotly.restyle("bar", info, [newdata])
-}
+function createbubble(individual){
 
+        const bubbleotunumber = individual.otu_ids;
+        const bubbleotulabel = individual.otu_labels;
+        const bubblesval = individual.sample_values;
         
+        var trace1 = {
+            x: bubbleotunumber,
+            y: bubblesval,
+            hovertemplate: '<b>%{x}</b>'+'<br>'+'<b>OTU Label:</b>'+'<br>'+'<i>%{text}</i>',
+            text: bubbleotulabel,
+            mode: 'markers',
+            name: "",
+            marker: {
+                size: bubblesval,
+                color: bubbleotunumber,
+                }
+        };
+    
+    var info = [trace1];
+
+    Plotly.newPlot('bubble', info);
+        
+
+};
