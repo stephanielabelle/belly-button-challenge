@@ -115,7 +115,7 @@ function createbubble(individual){
     var trace1 = {
         x: bubbleotunumber,
         y: bubblesval,
-        hovertemplate: '<b>Number of Samples within OTU:</b> %{x}'+'<br>'+'<b>OTU Organisms:</b>'+'<br>'+'<i>%{text}</i>',
+        hovertemplate: '<b>Number of Samples within OTU:</b> %{y}'+'<br>'+'<b>OTU Organisms:</b>'+'<br>'+'<i>%{text}</i>',
         text: bubbleotulabel,
         mode: 'markers',
         name: "",
