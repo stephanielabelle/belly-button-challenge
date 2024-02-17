@@ -3,11 +3,13 @@
 ## Belly Button Diversity Dashboard
 
 ### Objective
-This projects creates an interactive dashboard that explores the [Belly Button Diversity dataset](https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json) by analyzing the microbes that colonize the human navel.  
+This projects creates an [interactive dashboard](https://stephanielabelle.github.io/belly-button-challenge/) that explores the [Belly Button Diversity dataset](https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json) by analyzing the microbes that colonize the human navel.  
 
 This dataset provided subject metadata and microbial species data.  Microbial species were categorized by OTUs (operational taxonomic units).  OTU's are a system that groups microbes based on genetic sequence similarity.
 
 ### Dashboard Construction
+
+The Dashboard is available through [GitHub Pages](https://stephanielabelle.github.io/belly-button-challenge/).
 
 The javascript code, [app.js](static/js/app.js), is provided in this repository's static folder.  The html code is provided as [index.html](index.html), in this repository's main folder.  
 The dashboard is inititally populated with the first SubjectID of the dataset, then updated upon selection of SubjectID from a drop-down menu.
