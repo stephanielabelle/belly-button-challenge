@@ -9,6 +9,8 @@ This dataset provided subject metadata and microbial species data.  Microbial sp
 
 ### Dashboard Construction
 
+The Dashboard is available though [GitHub Pages](https://stephanielabelle.github.io/belly-button-challenge/)
+
 The javascript code, [app.js](static/js/app.js), is provided in this repository's static folder.  The html code is provided as [index.html](index.html), in this repository's main folder.  
 The dashboard is inititally populated with the first SubjectID of the dataset, then updated upon selection of SubjectID from a drop-down menu.
 
